@@ -1,0 +1,30 @@
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\AutomataAB\AutomataAB\bin\Debug\AutomataAB.exe.config
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\AutomataAB\AutomataAB\bin\Debug\AutomataAB.exe
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\AutomataAB\AutomataAB\bin\Debug\AutomataAB.pdb
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\AutomataAB\AutomataAB\obj\Debug\AutomataAB.csprojAssemblyReference.cache
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\AutomataAB\AutomataAB\obj\Debug\AutomataAB.Form1.resources
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\AutomataAB\AutomataAB\obj\Debug\AutomataAB.Properties.Resources.resources
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\AutomataAB\AutomataAB\obj\Debug\AutomataAB.csproj.GenerateResource.cache
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\AutomataAB\AutomataAB\obj\Debug\AutomataAB.csproj.CoreCompileInputs.cache
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\AutomataAB\AutomataAB\obj\Debug\AutomataAB.exe
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\AutomataAB\AutomataAB\obj\Debug\AutomataAB.pdb
+C:\Users\Gerardo Avila\Desktop\AutomataAB\AutomataAB\bin\Debug\AutomataAB.exe.config
+C:\Users\Gerardo Avila\Desktop\AutomataAB\AutomataAB\bin\Debug\AutomataAB.exe
+C:\Users\Gerardo Avila\Desktop\AutomataAB\AutomataAB\bin\Debug\AutomataAB.pdb
+C:\Users\Gerardo Avila\Desktop\AutomataAB\AutomataAB\obj\Debug\AutomataAB.csprojAssemblyReference.cache
+C:\Users\Gerardo Avila\Desktop\AutomataAB\AutomataAB\obj\Debug\AutomataAB.Form1.resources
+C:\Users\Gerardo Avila\Desktop\AutomataAB\AutomataAB\obj\Debug\AutomataAB.Properties.Resources.resources
+C:\Users\Gerardo Avila\Desktop\AutomataAB\AutomataAB\obj\Debug\AutomataAB.csproj.GenerateResource.cache
+C:\Users\Gerardo Avila\Desktop\AutomataAB\AutomataAB\obj\Debug\AutomataAB.csproj.CoreCompileInputs.cache
+C:\Users\Gerardo Avila\Desktop\AutomataAB\AutomataAB\obj\Debug\AutomataAB.exe
+C:\Users\Gerardo Avila\Desktop\AutomataAB\AutomataAB\obj\Debug\AutomataAB.pdb
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\AutomataAB\bin\Debug\AutomataAB.exe.config
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\AutomataAB\bin\Debug\AutomataAB.exe
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\AutomataAB\bin\Debug\AutomataAB.pdb
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\AutomataAB\obj\Debug\AutomataAB.csprojAssemblyReference.cache
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\AutomataAB\obj\Debug\AutomataAB.Form1.resources
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\AutomataAB\obj\Debug\AutomataAB.Properties.Resources.resources
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\AutomataAB\obj\Debug\AutomataAB.csproj.GenerateResource.cache
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\AutomataAB\obj\Debug\AutomataAB.csproj.CoreCompileInputs.cache
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\AutomataAB\obj\Debug\AutomataAB.exe
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\AutomataAB\obj\Debug\AutomataAB.pdb
