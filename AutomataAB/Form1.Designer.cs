@@ -24,27 +24,56 @@
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
+            this.inputMessage = new System.Windows.Forms.RichTextBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.progressB = new System.Windows.Forms.ProgressBar();
+            this.label7 = new System.Windows.Forms.Label();
             this.inputData = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.inputMessage = new System.Windows.Forms.RichTextBox();
             this.save = new System.Windows.Forms.Button();
             this.read = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.progressB = new System.Windows.Forms.ProgressBar();
-            this.Analizadorxd = new System.Windows.Forms.RichTextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
+            this.COMPILAR = new System.Windows.Forms.Button();
             this.SuspendLayout();
+            // 
+            // inputMessage
+            // 
+            this.inputMessage.Location = new System.Drawing.Point(194, 34);
+            this.inputMessage.Margin = new System.Windows.Forms.Padding(2);
+            this.inputMessage.Name = "inputMessage";
+            this.inputMessage.Size = new System.Drawing.Size(605, 350);
+            this.inputMessage.TabIndex = 5;
+            this.inputMessage.Text = "";
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.ToolTipTitle = "Guardar";
+            // 
+            // progressB
+            // 
+            this.progressB.Location = new System.Drawing.Point(2, 1);
+            this.progressB.Margin = new System.Windows.Forms.Padding(2);
+            this.progressB.Name = "progressB";
+            this.progressB.Size = new System.Drawing.Size(809, 15);
+            this.progressB.TabIndex = 8;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(191, 18);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(67, 13);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "TU CODIGO";
             // 
             // inputData
             // 
             this.inputData.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.inputData.Location = new System.Drawing.Point(43, 112);
-            this.inputData.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.inputData.Location = new System.Drawing.Point(11, 91);
+            this.inputData.Margin = new System.Windows.Forms.Padding(2);
             this.inputData.Name = "inputData";
             this.inputData.Size = new System.Drawing.Size(179, 20);
             this.inputData.TabIndex = 2;
@@ -53,7 +82,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(41, 97);
+            this.label2.Location = new System.Drawing.Point(9, 76);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(120, 13);
@@ -63,8 +92,8 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(43, 55);
-            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button1.Location = new System.Drawing.Point(11, 34);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(178, 24);
             this.button1.TabIndex = 4;
@@ -72,21 +101,12 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // inputMessage
-            // 
-            this.inputMessage.Location = new System.Drawing.Point(265, 34);
-            this.inputMessage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.inputMessage.Name = "inputMessage";
-            this.inputMessage.Size = new System.Drawing.Size(242, 235);
-            this.inputMessage.TabIndex = 5;
-            this.inputMessage.Text = "";
-            // 
             // save
             // 
             this.save.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.save.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.save.Location = new System.Drawing.Point(45, 161);
-            this.save.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.save.Location = new System.Drawing.Point(13, 140);
+            this.save.Margin = new System.Windows.Forms.Padding(2);
             this.save.Name = "save";
             this.save.Size = new System.Drawing.Size(83, 22);
             this.save.TabIndex = 6;
@@ -99,8 +119,8 @@
             // 
             this.read.BackColor = System.Drawing.Color.MintCream;
             this.read.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.read.Location = new System.Drawing.Point(133, 161);
-            this.read.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.read.Location = new System.Drawing.Point(101, 140);
+            this.read.Margin = new System.Windows.Forms.Padding(2);
             this.read.Name = "read";
             this.read.Size = new System.Drawing.Size(89, 22);
             this.read.TabIndex = 7;
@@ -112,7 +132,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(44, 40);
+            this.label4.Location = new System.Drawing.Point(12, 19);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(87, 13);
@@ -122,64 +142,22 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(46, 146);
+            this.label5.Location = new System.Drawing.Point(14, 125);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(134, 13);
             this.label5.TabIndex = 11;
             this.label5.Text = "3.- Selecciona una opcion.";
             // 
-            // toolTip1
+            // COMPILAR
             // 
-            this.toolTip1.ToolTipTitle = "Guardar";
-            // 
-            // progressB
-            // 
-            this.progressB.Location = new System.Drawing.Point(8, 253);
-            this.progressB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.progressB.Name = "progressB";
-            this.progressB.Size = new System.Drawing.Size(253, 15);
-            this.progressB.TabIndex = 8;
-            // 
-            // Analizadorxd
-            // 
-            this.Analizadorxd.Location = new System.Drawing.Point(546, 32);
-            this.Analizadorxd.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.Analizadorxd.Name = "Analizadorxd";
-            this.Analizadorxd.Size = new System.Drawing.Size(245, 235);
-            this.Analizadorxd.TabIndex = 12;
-            this.Analizadorxd.Text = "";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Arial Rounded MT Bold", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.Crimson;
-            this.label6.Location = new System.Drawing.Point(511, 138);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(32, 22);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "=>";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(351, 19);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(60, 13);
-            this.label7.TabIndex = 14;
-            this.label7.Text = "MUESTRA";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(645, 18);
-            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(55, 13);
-            this.label8.TabIndex = 15;
-            this.label8.Text = "ANALISIS";
+            this.COMPILAR.Location = new System.Drawing.Point(13, 183);
+            this.COMPILAR.Name = "COMPILAR";
+            this.COMPILAR.Size = new System.Drawing.Size(176, 23);
+            this.COMPILAR.TabIndex = 16;
+            this.COMPILAR.Text = "COMPILAR";
+            this.COMPILAR.UseVisualStyleBackColor = true;
+            this.COMPILAR.Click += new System.EventHandler(this.COMPILAR_Click_1);
             // 
             // Form1
             // 
@@ -187,11 +165,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Menu;
-            this.ClientSize = new System.Drawing.Size(810, 292);
-            this.Controls.Add(this.label8);
+            this.ClientSize = new System.Drawing.Size(810, 395);
+            this.Controls.Add(this.COMPILAR);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.Analizadorxd);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.progressB);
@@ -202,7 +178,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.inputData);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.ShowIcon = false;
@@ -214,20 +190,18 @@
         }
 
         #endregion
+        private System.Windows.Forms.RichTextBox inputMessage;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ProgressBar progressB;
+        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox inputData;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.RichTextBox inputMessage;
         private System.Windows.Forms.Button save;
         private System.Windows.Forms.Button read;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.ProgressBar progressB;
-        private System.Windows.Forms.RichTextBox Analizadorxd;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button COMPILAR;
     }
 }
 

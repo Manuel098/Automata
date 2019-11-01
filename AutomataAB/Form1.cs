@@ -19,8 +19,8 @@ namespace AutomataAB
         public string ruta, result;
         string[] palabras;
         public int iter = 0;
-
-        public Func<string, Task<bool>> Functions;
+        public delegate void Cons(string str);
+        public event Cons OnCons;
 
         public static List<string> Tokens = new List<string>();
         
@@ -29,9 +29,7 @@ namespace AutomataAB
         };
         
         public Form1() {
-            InitializeComponent();
-            Functions += IsVar;
-            Functions += IsConditonal;
+            InitializeComponent();            
         }
 
         private void exit_Click(object sender, EventArgs e) {
@@ -50,7 +48,6 @@ namespace AutomataAB
                 }
                 escribir.WriteLine(inputData.Text);
                 escribir.Close();
-                Analizadorxd.Text = "";
                 Tokens.Clear();
                 inputData.Clear();
             }
@@ -86,13 +83,6 @@ namespace AutomataAB
             catch {
                 MessageBox.Show("error");
             }
-            leer.Close();
-            Analizadorxd.Clear();
-            Tokens.FindAll(i => {
-                Analizadorxd.AppendText(i + "\n");
-                return true;
-            });
-            Tokens.Clear();
         }
 
         private void save_MouseHover(object sender, EventArgs e) {
@@ -107,7 +97,9 @@ namespace AutomataAB
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            ConsoleForm csf = new ConsoleForm();
+            OnCons += csf.PaintText;
+            csf.Show();
         }
 
         private void inputData_TextChanged(object sender, EventArgs e)
@@ -115,7 +107,7 @@ namespace AutomataAB
             
         }
 
-        public async Task<bool> IsVar(string Pattern) 
+        public async Task<bool> IsConditonal(string Pattern) 
         {
             string TEXT = " int a := 100;  float b:= 130;  float c,a,b,d:=asd; ";
             
@@ -135,24 +127,33 @@ namespace AutomataAB
             }
             return await Task.Run(() => rgx.IsMatch(Pattern)?true:false);
         }
-        public async Task<bool> IsConditonal(string Pattern) {
+        public async Task<bool> IsVar(string Pattern) {
             string TEXT = " int a := 100;  float b:= 130;  float c,a,b,d:=asd; ";
 
             // Use (?<groupName>pattern) to define a group named: groupName
             // Defined group named 'declare': using (?<declare>...)
             // And a group named 'value': use: (?<value>..)
-            string regex = @"(?<declare>\s*(Num|Dec)\s+[a-z]\s*)(:=(?<value>\s*\d+\s*))?;";
+            string regex = @"\A((?<declare>\s*(Num|Dec)\s+[a-z]+\s*)(:=(?<value>\s*\d+\s*))?;)*$\Z";
+           // string regex = @"\A((?<declare>\s*(Num|Dec)\s+[a-z]+\s*)(:=(?<value>\s*\d+\s*))?;)*$\Z";
             Regex rgx = new Regex(regex);
             MatchCollection matchCollection = Regex.Matches(Pattern, regex);
+            /*
+                        foreach (Match match in matchCollection) {
+                            string group = match.Groups["declare"].Value;
+                            Analizadorxd.AppendText("Full Text: " + match.Value + "\n");
+                            Analizadorxd.AppendText("<declare>: " + match.Groups["declare"].Value +"\n");
+                            Analizadorxd.AppendText("<value>: " + match.Groups["value"].Value + "\n");
+                            Analizadorxd.AppendText("------------------------------" + "\n");
+                        }*/
+            return await Task.Run(()=> rgx.IsMatch(Pattern) ? true : false);
+        }
 
-            foreach (Match match in matchCollection) {
-                string group = match.Groups["declare"].Value;
-                Console.WriteLine("Full Text: " + match.Value);
-                Console.WriteLine("<declare>: " + match.Groups["declare"].Value);
-                Console.WriteLine("<value>: " + match.Groups["value"].Value);
-                Console.WriteLine("------------------------------");
-            }
-            return await Task.Run(() => rgx.IsMatch(Pattern) ? true : false);
+
+        private async void COMPILAR_Click_1(object sender, EventArgs e)
+        {
+            var _IsVar= await IsVar(inputMessage.Text) ?"es valido \n":"no es valido \n";
+            OnCons?.Invoke(_IsVar);
+
         }
 
         private void button1_Click(object sender, EventArgs e) {

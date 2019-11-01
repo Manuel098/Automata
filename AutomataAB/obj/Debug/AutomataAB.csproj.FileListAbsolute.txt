@@ -47,3 +47,13 @@ D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Automata-master\Auto
 D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Automata-master\AutomataAB\obj\Debug\AutomataAB.csproj.CoreCompileInputs.cache
 D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Automata-master\AutomataAB\obj\Debug\AutomataAB.exe
 D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Automata-master\AutomataAB\obj\Debug\AutomataAB.pdb
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\AutomataAB.exe.config
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\AutomataAB.exe
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\AutomataAB.pdb
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\obj\Debug\AutomataAB.csprojAssemblyReference.cache
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\obj\Debug\AutomataAB.Form1.resources
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\obj\Debug\AutomataAB.Properties.Resources.resources
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\obj\Debug\AutomataAB.csproj.GenerateResource.cache
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\obj\Debug\AutomataAB.exe
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\obj\Debug\AutomataAB.pdb
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\obj\Debug\AutomataAB.ConsoleForm.resources
