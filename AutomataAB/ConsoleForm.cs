@@ -12,10 +12,11 @@ namespace AutomataAB
 {
     public partial class ConsoleForm : Form
     {
-        Form1 frm = new Form1();
-
-        public ConsoleForm()
+        public static Form1 frm;
+        
+        public ConsoleForm(Form1 f)
         {
+            frm = f;
             InitializeComponent();
         }
 
@@ -23,9 +24,17 @@ namespace AutomataAB
         {
             
         }
-        public void PaintText(string txt) 
+        public void PaintText(string txt,List<Memory> mem) 
         {
+            compilderdat.DataSource = null;
+            foreach (var dat in mem)             
+                compilderdat.Rows.Add(dat.TOKEN,dat.ID,dat.VALUE);            
             Analizadorxd.AppendText(txt +"\n");
+        }
+
+        private void ConsoleForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            frm.OnCons -= PaintText;
         }
     }
 }

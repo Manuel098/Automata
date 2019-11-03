@@ -14,13 +14,28 @@ using System.Diagnostics;
 
 namespace AutomataAB
 {
+    public struct Memory 
+    { 
+        public string TOKEN { get; set; }
+        public string ID { get; set; }
+        public dynamic VALUE { get; set; }
+
+        public Memory( string token, string id=null, dynamic value=null) 
+        {
+            TOKEN = token;
+            ID = id;
+            VALUE = value;
+        }   
+    }
     public partial class Form1 : Form {
 
         public string ruta, result;
         string[] palabras;
         public int iter = 0;
-        public delegate void Cons(string str);
+        public delegate void Cons(string str, List<Memory> ls);
         public event Cons OnCons;
+        public List<Memory> STACK = new List<Memory>();
+
 
         public static List<string> Tokens = new List<string>();
         
@@ -97,9 +112,7 @@ namespace AutomataAB
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            ConsoleForm csf = new ConsoleForm();
-            OnCons += csf.PaintText;
-            csf.Show();
+         
         }
 
         private void inputData_TextChanged(object sender, EventArgs e)
@@ -109,11 +122,6 @@ namespace AutomataAB
 
         public async Task<bool> IsConditonal(string Pattern) 
         {
-            string TEXT = " int a := 100;  float b:= 130;  float c,a,b,d:=asd; ";
-            
-            // Use (?<groupName>pattern) to define a group named: groupName
-            // Defined group named 'declare': using (?<declare>...)
-            // And a group named 'value': use: (?<value>..)
             string regex = @"(?<declare>\s*(Num|Dec)\s+[a-z]\s*)(:=(?<value>\s*\d+\s*))?;";
             Regex rgx = new Regex(regex);
             MatchCollection matchCollection = Regex.Matches(Pattern, regex);
@@ -128,23 +136,18 @@ namespace AutomataAB
             return await Task.Run(() => rgx.IsMatch(Pattern)?true:false);
         }
         public async Task<bool> IsVar(string Pattern) {
-            string TEXT = " int a := 100;  float b:= 130;  float c,a,b,d:=asd; ";
 
-            // Use (?<groupName>pattern) to define a group named: groupName
-            // Defined group named 'declare': using (?<declare>...)
-            // And a group named 'value': use: (?<value>..)
-            string regex = @"\A((?<declare>\s*(Num|Dec)\s+[a-z]+\s*)(:=(?<value>\s*\d+\s*))?;)*$\Z";
-           // string regex = @"\A((?<declare>\s*(Num|Dec)\s+[a-z]+\s*)(:=(?<value>\s*\d+\s*))?;)*$\Z";
+            string regex = @"\A((?<declare>\s*(Num|Dec))\s+(?<id>[a-z]+[0-9]*)\s*(:=(?<value>\s*\d+\s*))?;)*$\Z";         
             Regex rgx = new Regex(regex);
             MatchCollection matchCollection = Regex.Matches(Pattern, regex);
-            /*
-                        foreach (Match match in matchCollection) {
-                            string group = match.Groups["declare"].Value;
-                            Analizadorxd.AppendText("Full Text: " + match.Value + "\n");
-                            Analizadorxd.AppendText("<declare>: " + match.Groups["declare"].Value +"\n");
-                            Analizadorxd.AppendText("<value>: " + match.Groups["value"].Value + "\n");
-                            Analizadorxd.AppendText("------------------------------" + "\n");
-                        }*/
+
+            foreach (Match match in matchCollection) 
+            {
+                string token = match.Groups["declare"].Value.ToString().Replace(" ", null);
+                string id = match.Groups["id"].Value.ToString().Replace(" ", null);
+                dynamic value = match.Groups["value"].Value;
+                STACK.Add(new Memory(token, id ,value));
+            }                            
             return await Task.Run(()=> rgx.IsMatch(Pattern) ? true : false);
         }
 
@@ -152,7 +155,18 @@ namespace AutomataAB
         private async void COMPILAR_Click_1(object sender, EventArgs e)
         {
             var _IsVar= await IsVar(inputMessage.Text) ?"es valido \n":"no es valido \n";
-            OnCons?.Invoke(_IsVar);
+            OnCons?.Invoke(_IsVar,STACK);
+            STACK.Clear();
+        }
+
+        private void OpenConsole_Click(object sender, EventArgs e)
+        {
+            foreach(Form a in Application.OpenForms)             
+                if (a.Name == "ConsoleForm") return;
+            
+            ConsoleForm csf = new ConsoleForm(this);
+            OnCons += csf.PaintText;
+            csf.Show();
 
         }
 

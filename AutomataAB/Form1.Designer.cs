@@ -36,10 +36,14 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.COMPILAR = new System.Windows.Forms.Button();
+            this.OpenConsole = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // inputMessage
             // 
+            this.inputMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.inputMessage.Location = new System.Drawing.Point(194, 34);
             this.inputMessage.Margin = new System.Windows.Forms.Padding(2);
             this.inputMessage.Name = "inputMessage";
@@ -159,6 +163,16 @@
             this.COMPILAR.UseVisualStyleBackColor = true;
             this.COMPILAR.Click += new System.EventHandler(this.COMPILAR_Click_1);
             // 
+            // OpenConsole
+            // 
+            this.OpenConsole.Location = new System.Drawing.Point(15, 230);
+            this.OpenConsole.Name = "OpenConsole";
+            this.OpenConsole.Size = new System.Drawing.Size(174, 23);
+            this.OpenConsole.TabIndex = 17;
+            this.OpenConsole.Text = "ABRIR CONSOLA";
+            this.OpenConsole.UseVisualStyleBackColor = true;
+            this.OpenConsole.Click += new System.EventHandler(this.OpenConsole_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -166,6 +180,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Menu;
             this.ClientSize = new System.Drawing.Size(810, 395);
+            this.Controls.Add(this.OpenConsole);
             this.Controls.Add(this.COMPILAR);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label5);
@@ -177,9 +192,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.inputData);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.MaximizeBox = false;
             this.Name = "Form1";
             this.ShowIcon = false;
             this.Text = "AUTOMATA CHIDO";
@@ -202,6 +215,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button COMPILAR;
+        private System.Windows.Forms.Button OpenConsole;
     }
 }
 
