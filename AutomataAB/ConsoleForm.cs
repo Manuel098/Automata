@@ -26,6 +26,7 @@ namespace AutomataAB
         }
         public void PaintText(object txt,List<Memory> mem) 
         {
+            Analizadorxd.Text = "";
             compilderdat.DataSource = null;
             foreach (var dat in mem)             
                 compilderdat.Rows.Add(dat.TOKEN,dat.ID,dat.VALUE);            

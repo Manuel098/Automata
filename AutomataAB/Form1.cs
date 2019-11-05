@@ -85,6 +85,7 @@ namespace AutomataAB
         };
         
         public Form1() {
+            
             InitializeComponent();            
         }
 
@@ -163,7 +164,7 @@ namespace AutomataAB
 
         public async Task<bool> IsConditonal(string Pattern) 
         {
-            string regex = @"\A\s*((?<token>(Si|SiTons)))\s*\(\s*((?<condition>[a-z]+\s*==\s*('\s*[a-z]*\s*'|[\d+])))\s*\)\s*\{\s*\}$\Z";
+            string regex = @"\A\s*((?<token>(Si|SiTons)))\s*\(\s*((?<condition>[a-z]+\s*==\s*('[\s*a-z\s*]*'|[\d+])))\s*\)\s*\{\s*\}$\Z";
             Regex rgx = new Regex(regex);
             MatchCollection matchCollection = Regex.Matches(Pattern, regex);
 
@@ -206,7 +207,14 @@ namespace AutomataAB
             csf.Show();
 
         }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
 
+            if (keyData == Keys.Tab){
+                inputMessage.Text += "mm";
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
         private void button1_Click(object sender, EventArgs e) {
             using(var open = new OpenFileDialog()) 
             {
