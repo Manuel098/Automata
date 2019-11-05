@@ -74,6 +74,7 @@ namespace AutomataAB
         string[] palabras;
         public int iter = 0;
         public delegate void Cons(object str, List<Memory> ls);
+        public Action<bool> algo;
         public event Cons OnCons;
         public List<Memory> STACK = new List<Memory>();
         
@@ -83,10 +84,16 @@ namespace AutomataAB
         public static List<string> Identificadores = new List<string>(){
             "Num","Tex","Si","SiTons","Tons","Lop","Sim","Dec","Imp"
         };
-        
+        void prueba(bool a) { }
+
         public Form1() {
             
-            InitializeComponent();            
+            InitializeComponent();
+            algo += delegate 
+            {
+
+
+            };
         }
 
         private void exit_Click(object sender, EventArgs e) {
