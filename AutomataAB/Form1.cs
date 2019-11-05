@@ -14,28 +14,69 @@ using System.Diagnostics;
 
 namespace AutomataAB
 {
-    public struct Memory 
+
+    public interface IOperation 
+    {
+        T sum<T>();
+        T rest<T>();
+        T div<T>();
+        T multi<T>();
+    }
+
+    [Serializable]
+    public struct Memory:IOperation
     { 
         public string TOKEN { get; set; }
         public string ID { get; set; }
         public dynamic VALUE { get; set; }
-
+        public enum OPlst { sum, res, mult, div }
+        
         public Memory( string token, string id=null, dynamic value=null) 
         {
             TOKEN = token;
             ID = id;
             VALUE = value;
-        }   
+        }
+
+        public static implicit operator decimal (Memory m) => m.VALUE;
+        public static implicit operator string (Memory m) =>m.VALUE;
+
+        public override string ToString()
+        {
+            StringBuilder srt = new StringBuilder();
+            srt.AppendFormat("TOKEN->{0}\nID->{1}\nVALUE->{2}",TOKEN,ID,VALUE);
+            return srt.ToString();
+        }
+
+        public T sum<T>()
+        {
+            throw new NotImplementedException();
+        }
+
+        public T rest<T>()
+        {
+            throw new NotImplementedException();
+        }
+
+        public T div<T>()
+        {
+            throw new NotImplementedException();
+        }
+
+        public T multi<T>()
+        {
+            throw new NotImplementedException();
+        }
     }
     public partial class Form1 : Form {
 
         public string ruta, result;
         string[] palabras;
         public int iter = 0;
-        public delegate void Cons(string str, List<Memory> ls);
+        public delegate void Cons(object str, List<Memory> ls);
         public event Cons OnCons;
         public List<Memory> STACK = new List<Memory>();
-
+        
 
         public static List<string> Tokens = new List<string>();
         
@@ -122,16 +163,12 @@ namespace AutomataAB
 
         public async Task<bool> IsConditonal(string Pattern) 
         {
-            string regex = @"(?<declare>\s*(Num|Dec)\s+[a-z]\s*)(:=(?<value>\s*\d+\s*))?;";
+            string regex = @"\A\s*((?<token>(Si|SiTons)))\s*\(\s*((?<condition>[a-z]+\s*==\s*('\s*[a-z]*\s*'|[\d+])))\s*\)\s*\{\s*\}$\Z";
             Regex rgx = new Regex(regex);
             MatchCollection matchCollection = Regex.Matches(Pattern, regex);
 
             foreach (Match match in matchCollection) {
-                string group = match.Groups["declare"].Value;
-                Console.WriteLine("Full Text: " + match.Value);
-                Console.WriteLine("<declare>: " + match.Groups["declare"].Value);
-                Console.WriteLine("<value>: " + match.Groups["value"].Value);
-                Console.WriteLine("------------------------------");
+                
             }
             return await Task.Run(() => rgx.IsMatch(Pattern)?true:false);
         }
@@ -142,20 +179,20 @@ namespace AutomataAB
             MatchCollection matchCollection = Regex.Matches(Pattern, regex);
 
             foreach (Match match in matchCollection) 
-            {
+            {               
                 string token = match.Groups["declare"].Value.ToString().Replace(" ", null);
                 string id = match.Groups["id"].Value.ToString().Replace(" ", null);
                 dynamic value = match.Groups["value"].Value;
-                STACK.Add(new Memory(token, id ,value));
+                Memory variable = new Memory(token, id, value);
+                STACK.Add(variable);
             }                            
             return await Task.Run(()=> rgx.IsMatch(Pattern) ? true : false);
         }
-
-
         private async void COMPILAR_Click_1(object sender, EventArgs e)
         {
-            var _IsVar= await IsVar(inputMessage.Text) ?"es valido \n":"no es valido \n";
-            OnCons?.Invoke(_IsVar,STACK);
+            var _IsVar= await IsVar(inputMessage.Text) ?"variable valida \n":"variable no valida \n";
+            var _IsConditional = await IsConditonal(inputMessage.Text) ? "condicional valido" : "Condicional no valido";
+            OnCons?.Invoke(_IsConditional, STACK);           
             STACK.Clear();
         }
 

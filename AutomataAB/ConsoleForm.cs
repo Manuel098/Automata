@@ -24,7 +24,7 @@ namespace AutomataAB
         {
             
         }
-        public void PaintText(string txt,List<Memory> mem) 
+        public void PaintText(object txt,List<Memory> mem) 
         {
             compilderdat.DataSource = null;
             foreach (var dat in mem)             
