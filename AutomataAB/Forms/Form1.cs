@@ -68,21 +68,26 @@ namespace AutomataAB
             throw new NotImplementedException();
         }
     }
-    /// <summary>
-    /// FAKE CLASS
-    /// </summary>
+    //Other
     partial class Form1 : Form
     {
 
         public async Task<bool> IsConditonal(string Pattern)
         {
-            Regex rgx = new Regex(@"\A\s*((?<token>(Si|SiTons)))\s*\(\s*((?<condition>[a-z]+\s*==\s*('[\s*a-z\s*]*'|[\d+])))\s*\)\s*\{\s*((Num|Dec)\s+([a-z]+[0-9]*)\s*(:=\s*\d+\s*)?;)*\s*\}$\Z");
-            MatchCollection matchCollection = Regex.Matches(Pattern, @"\A\s*((?<token>(Si|SiTons)))\s*\(\s*((?<condition>[a-z]+\s*==\s*('[\s*a-z\s*]*'|[\d+])))\s*\)\s*\{\s*((Num|Dec)\s+([a-z]+[0-9]*)\s*(:=\s*\d+\s*)?;)*\s*\}$\Z");
+            inputMessage.ForeColor = Color.White;
+            var regtxt = @"\A\s*((?<token>(Si|SiTons)))\s*\(\s*((?<condition>[A-z]+\s*==\s*('[\s*a-z\s*]*'|[\d]+)))\s*\)\s*\{\s*(\s*((?<declare>(Num|Dec))\s+(?<id>[A-z]+d*)\s*(:=\s*\d+\s*))?;)*\s*\}$\Z";
+            Regex rgx = new Regex(regtxt,RegexOptions.Singleline);
+            MatchCollection matchCollection = Regex.Matches(Pattern, regtxt);
 
             foreach (Match match in matchCollection)
             {
                 string token = match.Groups["token"].Value.ToString().Replace(" ", null);
                 string id = match.Groups["condition"].Value.ToString().Replace(" ", null);
+                //Selection Color
+                inputMessage.Select(match.Groups["token"].Index, match.Groups["token"].Length);
+                inputMessage.SelectionColor = Color.FromArgb(57,135,199);
+                inputMessage.Select(match.Groups["declare"].Index, match.Groups["declare"].Length);
+                inputMessage.SelectionColor = Color.FromArgb(57, 135, 199);
                 //dynamic value = match.Groups["value"].Value;
                 Memory variable = new Memory(token, id);
                 STACK.Add(variable);
@@ -93,9 +98,9 @@ namespace AutomataAB
         public async Task<bool> IsVar(string Pattern)
         {
 
-            string varegex = @"\A((?<declare>\s*(Num|Dec))\s+(?<id>[a-z]+[0-9]*)\s*(:=(?<value>\s*\d+\s*))?;)*$\Z";
-            Regex rgx = new Regex(varegex);
-            MatchCollection matchCollection = Regex.Matches(Pattern, varegex);
+            string varegex;
+            Regex rgx = new Regex(@"\A((?<declare>\s*(Num|Dec))\s+(?<id>[a-z]+[0-9]*)\s*(:=(?<value>\s*\d+\s*))?;)*$\Z");
+            MatchCollection matchCollection = Regex.Matches(Pattern,"");
 
             foreach (Match match in matchCollection)
             {
