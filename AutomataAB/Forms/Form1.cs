@@ -75,7 +75,7 @@ namespace AutomataAB
         public async Task<bool> IsConditonal(string Pattern)
         {
             inputMessage.ForeColor = Color.White;
-            var regtxt = @"\A\s*((?<token>(Si|SiTons)))\s*\(\s*((?<condition>[A-z]+\s*==\s*('[\s*a-z\s*]*'|[\d]+)))\s*\)\s*\{\s*(\s*((?<declare>(Num|Dec))\s+(?<id>[A-z]+d*)\s*(:=\s*\d+\s*))?;)*\s*\}$\Z";
+            var regtxt = @"\A\s*;?\s*((?<token>(Si|SiTons)))\s*\(\s*((?<condition>[A-z]+\s*==\s*('[\s*a-z\s*]*'|[\d]+)))\s*\)\s*\{\s*(\s*((?<declare>(Num|Dec))\s+(?<id>[A-z]+d*)\s*(:=\s*\d+\s*))?;)*\s*\}$\Z";
             Regex rgx = new Regex(regtxt,RegexOptions.Singleline);
             MatchCollection matchCollection = Regex.Matches(Pattern, regtxt);
 
