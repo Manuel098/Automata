@@ -27,11 +27,12 @@ namespace AutomataAB
         public void PaintText(List<string> err ,List<Memory> mem) 
         {
             compilderdat.Rows.Clear();
+            Analizadorxd.Text = null;
             foreach (var dat in mem)             
                 compilderdat.Rows.Add(dat.TOKEN,dat.ID,dat.VALUE);  
            
             foreach(var e in err)
-            Analizadorxd.AppendText(e +"\n");
+            Analizadorxd.AppendText($"consola-> {e}\n");
         }
 
         private void ConsoleForm_FormClosing(object sender, FormClosingEventArgs e)

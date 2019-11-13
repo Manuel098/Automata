@@ -68,3 +68,6 @@ D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\Automata\Automa
 D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\Automata\AutomataAB\obj\Debug\AutomataAB.csproj.CoreCompileInputs.cache
 D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\Automata\AutomataAB\obj\Debug\AutomataAB.exe
 D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\Automata\AutomataAB\obj\Debug\AutomataAB.pdb
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\System.ValueTuple.dll
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\System.ValueTuple.xml
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\obj\Debug\AutomataAB.csproj.CopyComplete

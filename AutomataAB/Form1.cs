@@ -138,19 +138,22 @@ namespace AutomataAB
         {
             STACK.AsyncClear();
             ERROR.AsyncClear();
-            bool x = await IsConditonal(inputMessage.Text);
-            bool y = await IsVar(inputMessage.Text);
-            bool z = await IsPrint(inputMessage.Text);
-            string _IsConditional = (x||y||z) ? "condicional valido" : "Condicional no valido";
-            if (x) 
-            { 
-                
+            var x = await IsConditonal(inputMessage.Text);
+            var y = await IsVar(inputMessage.Text);
+            var z = await IsPrint(inputMessage.Text);
+            //string _IsConditional = (x||y||z) ? "condicional valido" : "Condicional no valido";
+            if (!x.Item1) 
+            {
+                ERROR.Add("Si Salio joven");
             }
-            if (y)
+            if (!y)
             {
 
             }
-
+            if (!z) 
+            { 
+            
+            }
             OnCons?.Invoke(ERROR,STACK);                       
         }
          
