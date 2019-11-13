@@ -15,92 +15,36 @@ using System.Diagnostics;
 
 namespace AutomataAB
 {
-    public interface IOperation
-    {
-        T sum<T>();
-        T rest<T>();
-        T div<T>();
-        T multi<T>();
+    static class Extend
+    {   
+        public async static void AsyncClear<T>(this List<T> t) => await Task.Run(() => t.Clear());       
     }
-
-    [Serializable]
-    public struct Memory : IOperation
+    //Other 
+    public partial class Form1 : Form
     {
-        public string TOKEN { get; set; }
-        public string ID { get; set; }
-        public dynamic VALUE { get; set; }
-        public enum OPlst { sum, res, mult, div }
-
-        public Memory(string token, string id = null, dynamic value = null)
-        {
-            TOKEN = token;
-            ID = id;
-            VALUE = value;
-        }
-
-        public static implicit operator decimal(Memory m) => m.VALUE;
-        public static implicit operator string(Memory m) => m.VALUE;
-
-        public override string ToString()
-        {
-            StringBuilder srt = new StringBuilder();
-            srt.AppendFormat("TOKEN->{0}\nID->{1}\nVALUE->{2}", TOKEN, ID, VALUE);
-            return srt.ToString();
-        }
-
-        public T sum<T>()
-        {
-            throw new NotImplementedException();
-        }
-
-        public T rest<T>()
-        {
-            throw new NotImplementedException();
-        }
-
-        public T div<T>()
-        {
-            throw new NotImplementedException();
-        }
-
-        public T multi<T>()
-        {
-            throw new NotImplementedException();
-        }
-    }
-    //Other
-    partial class Form1 : Form
-    {
-
-        public async Task<bool> IsConditonal(string Pattern)
-        {
-            inputMessage.ForeColor = Color.White;
-            var regtxt = @"\A\s*;?\s*((?<token>(Si|SiTons)))\s*\(\s*((?<condition>[A-z]+\s*==\s*('[\s*a-z\s*]*'|[\d]+)))\s*\)\s*\{\s*(\s*((?<declare>(Num|Dec))\s+(?<id>[A-z]+d*)\s*(:=\s*\d+\s*))?;)*\s*\}$\Z";
-            Regex rgx = new Regex(regtxt,RegexOptions.Singleline);
-            MatchCollection matchCollection = Regex.Matches(Pattern, regtxt);
+        public async Task<bool> IsConditonal(string input)
+        {      
+            var @if = @"((Si|SiTons)\s*\(\s*([A-z]+\s*==\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*\{\s*\})*";                       
+            var ifrecursive = @"((?<token>(Si|SiTons)))\s*\(\s*((?<condition>[A-z]+\s*==\s*('[\s*A-z\s*]*'|[\d]+)))\s*\)\s*\{\s*"+@if+@"\s*\}$";
+            
+            Regex rgx = new Regex(ifrecursive, RegexOptions.Singleline);
+            MatchCollection matchCollection = Regex.Matches(input, ifrecursive);
 
             foreach (Match match in matchCollection)
             {
                 string token = match.Groups["token"].Value.ToString().Replace(" ", null);
                 string id = match.Groups["condition"].Value.ToString().Replace(" ", null);
-                //Selection Color
-                inputMessage.Select(match.Groups["token"].Index, match.Groups["token"].Length);
-                inputMessage.SelectionColor = Color.FromArgb(57,135,199);
-                inputMessage.Select(match.Groups["declare"].Index, match.Groups["declare"].Length);
-                inputMessage.SelectionColor = Color.FromArgb(57, 135, 199);
-                //dynamic value = match.Groups["value"].Value;
                 Memory variable = new Memory(token, id);
                 STACK.Add(variable);
             }
-            return await Task.Run(() => rgx.IsMatch(Pattern) ? true : false);
+            return await Task.Run(() => rgx.IsMatch(input) ? true : false);
         }
 
-        public async Task<bool> IsVar(string Pattern)
+        public async Task<bool> IsVar(string input)
         {
-
-            string varegex;
-            Regex rgx = new Regex(@"\A((?<declare>\s*(Num|Dec))\s+(?<id>[a-z]+[0-9]*)\s*(:=(?<value>\s*\d+\s*))?;)*$\Z");
-            MatchCollection matchCollection = Regex.Matches(Pattern,"");
+            var @var = @"((?<declare>\s*(Num|Dec|Tex))\s+(?<id>[a-z]+[0-9]*)\s*(:=(?<value>\s*('[\s*A-z\s*]*'|[\d]+)\s*))?;)*$";
+            Regex rgx = new Regex(@var);
+            MatchCollection matchCollection = Regex.Matches(input,@var);
 
             foreach (Match match in matchCollection)
             {
@@ -110,7 +54,23 @@ namespace AutomataAB
                 Memory variable = new Memory(token, id, value);
                 STACK.Add(variable);
             }
-            return await Task.Run(() => rgx.IsMatch(Pattern) ? true : false);
+            return await Task.Run(() => rgx.IsMatch(input) ? true : false);
+        }
+        public async Task<bool> IsPrint(string input)
+        {
+            var @var = @"(((?<declare>\s*(Imp))\s*\((?<print>('[\s*A-z\s*]*')))\s*\)\s*;)*$";
+            Regex rgx = new Regex(@var);
+            MatchCollection matchCollection = Regex.Matches(input, @var);
+
+            foreach (Match match in matchCollection)
+            {
+                string token = match.Groups["declare"].Value.ToString().Replace(" ", null);
+                if (match.Groups["print"].Value != null)
+                    ERROR.Add($"consola->{match.Groups["print"].Value.Replace("'",null)}");
+                Memory variable = new Memory(token);
+                STACK.Add(variable);
+            }
+            return await Task.Run(() => rgx.IsMatch(input) ? true : false);
         }
 
     }

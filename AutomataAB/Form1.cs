@@ -13,15 +13,40 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 
 namespace AutomataAB
-{ 
+{
+    public interface Ivariable
+    {
+        
+    }
+
+    public struct Memory
+    {
+        public string TOKEN { get; set; }
+        public string ID { get; set; }
+        public dynamic VALUE { get; set; }
+        public Memory(string token, string id = null, dynamic value = null)
+        {
+            TOKEN = token;
+            ID = id;
+            VALUE = value;
+        }
+        public static implicit operator int(Memory m) => int.Parse(m.VALUE);
+        public static implicit operator string(Memory m) => $"{m.VALUE}";
+        public override string ToString()
+        {
+            StringBuilder srt = new StringBuilder();
+            srt.AppendFormat("TOKEN->{0}\nID->{1}\nVALUE->{2}", TOKEN, ID, VALUE);
+            return srt.ToString();
+        }
+    }
     public partial class Form1 : Form {
 
         public string ruta, result;
         string[] palabras;
         public int iter = 0;
-        public event Action<object, List<Memory>> OnCons;
+        public event Action<List<string>, List<Memory>> OnCons;
         public List<Memory> STACK = new List<Memory>();
-
+        public List<string> ERROR = new List<string>();
 
         public static List<string> Tokens = new List<string>();
 
@@ -106,16 +131,29 @@ namespace AutomataAB
         {
 
         }
+
         
-        
+
         private async void COMPILAR_Click_1(object sender, EventArgs e)
         {
-            var _IsVar= await IsVar(inputMessage.Text) ?"variable valida \n":"variable no valida \n";
-            var _IsConditional = await IsConditonal(inputMessage.Text) ? "condicional valido" : "Condicional no valido";
-            OnCons?.Invoke(_IsConditional, STACK);           
-            STACK.Clear();
-        }
+            STACK.AsyncClear();
+            ERROR.AsyncClear();
+            bool x = await IsConditonal(inputMessage.Text);
+            bool y = await IsVar(inputMessage.Text);
+            bool z = await IsPrint(inputMessage.Text);
+            string _IsConditional = (x||y||z) ? "condicional valido" : "Condicional no valido";
+            if (x) 
+            { 
+                
+            }
+            if (y)
+            {
 
+            }
+
+            OnCons?.Invoke(ERROR,STACK);                       
+        }
+         
         private void OpenConsole_Click(object sender, EventArgs e)
         {
             foreach(Form a in Application.OpenForms)             
@@ -124,13 +162,9 @@ namespace AutomataAB
             ConsoleForm csf = new ConsoleForm(this);
             OnCons += csf.PaintText;
             csf.Show();
-
         }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
 
-            if (keyData == Keys.Tab){
-                inputMessage.Text += "mm";
-            }
 
             return base.ProcessCmdKey(ref msg, keyData);
         }
@@ -539,6 +573,19 @@ namespace AutomataAB
             toolTip1.Show("Muestra todas las oraciones de un .TxT", read);
         }
 
+        private async void inputMessage_TextChanged(object sender, EventArgs e)
+        {
+            //bool x = await IsConditonal(inputMessage.Text);
+            //var _IsVar = await IsVar(inputMessage.Text) ? "variable valida \n" : "variable no valida \n";
+            //var _IsConditional =  x? "condicional valido" : "Condicional no valido";
+            //if (x) 
+            //{
+            //    OnCons?.Invoke(_IsConditional, STACK);
+            //    STACK.Clear();
+            //    return;
+            //} 
+        }
+
         private void button1_Click2(object sender, EventArgs e) {
             using (var open = new OpenFileDialog()) {
                 open.Filter = "Archivos txt(*.txt)|*.txt";
@@ -552,12 +599,6 @@ namespace AutomataAB
 
         #endregion
 
-
-
-
-
-
     }
-
 }
 

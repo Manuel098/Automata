@@ -24,13 +24,14 @@ namespace AutomataAB
         {
             
         }
-        public void PaintText(object txt,List<Memory> mem) 
+        public void PaintText(List<string> err ,List<Memory> mem) 
         {
-            Analizadorxd.Text = "";
-            compilderdat.DataSource = null;
+            compilderdat.Rows.Clear();
             foreach (var dat in mem)             
-                compilderdat.Rows.Add(dat.TOKEN,dat.ID,dat.VALUE);            
-            Analizadorxd.AppendText(txt +"\n");
+                compilderdat.Rows.Add(dat.TOKEN,dat.ID,dat.VALUE);  
+           
+            foreach(var e in err)
+            Analizadorxd.AppendText(e +"\n");
         }
 
         private void ConsoleForm_FormClosing(object sender, FormClosingEventArgs e)
