@@ -144,7 +144,7 @@ namespace AutomataAB
             //string _IsConditional = (x||y||z) ? "condicional valido" : "Condicional no valido";
             if (!x.Item1) 
             {
-                ERROR.Add("Si Salio joven");
+                ERROR.Add("Si jala cavashero :p");
             }
             if (!y)
             {

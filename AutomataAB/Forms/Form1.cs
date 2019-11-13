@@ -17,7 +17,8 @@ namespace AutomataAB
 {
     static class Extend
     {   
-        public async static void AsyncClear<T>(this List<T> t) => await Task.Run(() => t.Clear());       
+        public async static void AsyncClear<T>(this List<T> t) => await Task.Run(() => t.Clear());
+        public async static void AsyncAdd<T>(this List<T> t, T dato) => await Task.Run(() => t.Add(dato));
     }
     //Other 
     public partial class Form1 : Form
@@ -25,8 +26,9 @@ namespace AutomataAB
         
         public async Task<(bool,int)> IsConditonal(string input)
         {           
-            var @if = @"(?<token>((Si|SiTons)|(Tons))\s*(?<condition>(\(\s*([A-z]+\s*==\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*\})*";                       
-            var ifrecursive = @"(?<token>((Si|SiTons)|(Tons))\s*(?<condition>(\(\s*([A-z]+\s*==\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*"+@if+@"\s*\})*";      
+            var @if = @"((?<token>((Si|SiTons)|(Tons)))\s*(?<condition>(\(\s*([A-z]+\s*==\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*\})*";                       
+            var ifrecursiv = @"(?<token>((Si|SiTons)|(Tons))\s*(?<condition>(\(\s*([A-z]+\s*==\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*"+@if+@"\s*\})*";
+            var ifrecursive = @"(?<token>((Si|SiTons)|(Tons))\s*(?<condition>(\(\s*([A-z]+\s*==\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*" +ifrecursiv+ @"\s*\})*";
             Regex rgx = new Regex(ifrecursive, RegexOptions.Singleline);
             MatchCollection matchCollection = Regex.Matches(input, ifrecursive);
             bool isTons = true;
@@ -45,14 +47,14 @@ namespace AutomataAB
                     }
                 }
                 Memory variable = new Memory(token, id);
-                STACK.Add(variable);
+                STACK.AsyncAdd(variable);
             }
             return await Task.Run(() => {
                 
                 var tuple = (var_: rgx.IsMatch(input), lin: 5);
                 if (!isTons) 
                 {                    
-                    ERROR.Add($"La sentencia 'Tons' no puede contener argumentos, ERROR LINEA: {line}");
+                    ERROR.AsyncAdd($"La sentencia 'Tons' no puede contener argumentos, ERROR LINEA: {line}");
                 }
 
                 return tuple;                
@@ -61,17 +63,16 @@ namespace AutomataAB
 
         public async Task<bool> IsVar(string input)
         {
-            var @var = @"((?<declare>\s*(Num|Dec|Tex))\s+(?<id>[a-z]+[0-9]*)\s*(:=(?<value>\s*('[\s*A-z\s*]*'|[\d]+)\s*))?;)*$";
+            var @var = @"(((?<declare>\s*(Num|Dec|Tex))\s+(?<id>[a-z]+[0-9]*)\s*(:=(?<value>\s*('[\s*\w\s*]*'|[\d]+)\s*))?;)|((?<declare>\s*(Num|Dec|Tex))\s+(?<id>([A-z]*\s*,\s*[A-z]*)*)s*;\s*))*$";
             Regex rgx = new Regex(@var);
             MatchCollection matchCollection = Regex.Matches(input,@var);
-
             foreach (Match match in matchCollection)
             {
                 string token = match.Groups["declare"].Value.ToString().Replace(" ", null);
                 string id = match.Groups["id"].Value.ToString().Replace(" ", null);
                 dynamic value = match.Groups["value"].Value;
                 Memory variable = new Memory(token, id, value);
-                STACK.Add(variable);
+                STACK.AsyncAdd(variable);
             }
             return await Task.Run(() => rgx.IsMatch(input) ? true : false);
         }
@@ -88,8 +89,7 @@ namespace AutomataAB
                 if (match.Groups["print"].Value != null)
                     ERROR.Add($"{match.Groups["print"].Value.Replace("'",null)}");
                 Memory variable = new Memory(token);
-                STACK.Add(variable);
-                
+                STACK.AsyncAdd(variable);                
             }
             return await Task.Run(() => rgx.IsMatch(input) ? true : false);
         }
