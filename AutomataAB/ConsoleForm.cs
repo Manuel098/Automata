@@ -28,11 +28,13 @@ namespace AutomataAB
         {
             compilderdat.Rows.Clear();
             Analizadorxd.Text = null;
-            foreach (var dat in mem)             
-                compilderdat.Rows.Add(dat.TOKEN,dat.ID,dat.VALUE);  
-           
+            foreach (var dat in mem) 
+            {
+                if (dat.ID == null && dat.TOKEN == null && dat.VALUE == null) continue;
+                else compilderdat.Rows.Add(dat.TOKEN, dat.ID, dat.VALUE);
+            }                           
             foreach(var e in err)
-            Analizadorxd.AppendText($"consola-> {e}\n");
+            Analizadorxd.AppendText(e+"\n");
         }
 
         private void ConsoleForm_FormClosing(object sender, FormClosingEventArgs e)

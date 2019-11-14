@@ -14,10 +14,6 @@ using System.Diagnostics;
 
 namespace AutomataAB
 {
-    public interface Ivariable
-    {
-        
-    }
 
     public struct Memory
     {
@@ -45,9 +41,11 @@ namespace AutomataAB
         string[] palabras;
         public int iter = 0;
         public event Action<List<string>, List<Memory>> OnCons;
-        public List<Memory> STACK = new List<Memory>();
-        public List<string> ERROR = new List<string>();
-
+        public List<Memory> STACK = new List<Memory>();        
+        public struct CONSOLEMESSAGE 
+        {
+            public static List<string> MESSAGE = new List<string>();
+        }
         public static List<string> Tokens = new List<string>();
 
         public static List<string> Identificadores = new List<string>(){
@@ -137,24 +135,44 @@ namespace AutomataAB
         private async void COMPILAR_Click_1(object sender, EventArgs e)
         {
             STACK.AsyncClear();
-            ERROR.AsyncClear();
+            CONSOLEMESSAGE.MESSAGE.AsyncClear();
             var x = await IsConditonal(inputMessage.Text);
             var y = await IsVar(inputMessage.Text);
             var z = await IsPrint(inputMessage.Text);
             //string _IsConditional = (x||y||z) ? "condicional valido" : "Condicional no valido";
-            if (!x.Item1) 
+            if (x.Item1==false) 
             {
-                ERROR.Add("Si jala cavashero :p");
+                if(inputMessage.Text.Contains("Tons"))
+                AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"La sentencia 'Tons' no tiene el formato correcto,  LINEA: {x.Item2}",x.Item3);
+                else if (inputMessage.Text.Contains("Si"))
+                    AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"La sentencia 'Si' no tiene el formato correcto,  LINEA: {x.Item2}", x.Item3);
+                else if (inputMessage.Text.Contains("SiTons"))
+                    AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"La sentencia 'SiTons' no tiene el formato correcto,  LINEA: {x.Item2}", x.Item3);
             }
-            if (!y)
+            if (!y.Item1==false)
             {
-
+                /*if (_value.Contains(",,"))
+                {
+                    TP = TypeMessage.Error;
+                    CONSOLEMESSAGE.MESSAGE.AsyncAdd($"Uso de ',' invalido", TP);                   
+                }*/
+               /* else if (token.Contains("Tex"))
+                {
+                    string valuestr = _value.ToString();
+                    long a = valuestr.LongCount(i => i.ToString() == "'");
+                    if (a != 2)
+                    {
+                        TP = TypeMessage.Error;
+                        string msg = a < 2 ? $" falta(n) {(2 - a)} comilla(s)." : $" sobra(n) {(a - 2)} comilla(s).";
+                        CONSOLEMESSAGE.MESSAGE.AsyncAdd($"Se requieren 2 comillas que encapsulen la variable,{msg}.", TP);
+                    }
+                }*/
             }
-            if (!z) 
-            { 
-            
+            if (!z.Item1==false) 
+            {
+                
             }
-            OnCons?.Invoke(ERROR,STACK);                       
+            OnCons?.Invoke(CONSOLEMESSAGE.MESSAGE,STACK);                       
         }
          
         private void OpenConsole_Click(object sender, EventArgs e)
