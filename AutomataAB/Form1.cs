@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Threading;
 using System.Windows.Forms;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Diagnostics;
 
 namespace AutomataAB
 {
@@ -134,6 +128,7 @@ namespace AutomataAB
 
         private async void COMPILAR_Click_1(object sender, EventArgs e)
         {
+            runAuto(inputMessage.Text);
             STACK.AsyncClear();
             CONSOLEMESSAGE.MESSAGE.AsyncClear();
             var x = await IsConditonal(inputMessage.Text);
@@ -203,7 +198,7 @@ namespace AutomataAB
 
         #region  Analizer
 
-        private string runAuto(string word) {
+        private string runAuto(string word,int i) {
             Regex reg = new Regex((@"a-zA-Z+"));
             string finishWord = word, status = "e0", wordNew = "";
             bool sum = false;
@@ -482,7 +477,7 @@ namespace AutomataAB
             bool valid = false, dec = true, sent = false;
             // Variables para asignar.
             string jkl = "", jkl1 = "", jkl2 = "", jkl3 = "";
-            bool fin = false, fin2=false;
+            bool fin = false, fin2=false, fin3 = false, fin4 = false;
             Tokens.FindAll(i => {
                 Analizadorxd.AppendText(i + " ");
                 if (jkl == "" && sent == true && i == "identificador")
@@ -491,7 +486,8 @@ namespace AutomataAB
                     if (jkl2 != "") {
                         fin = sentencia(jkl, jkl1, jkl2) && i == "Cierre" ? true : false;
                         fin2 = Si(jkl, jkl1, jkl2) && i == "cerrarLlave" ? true : false;
-                        fin2 = tonsq(jkl) && i == "cerrarLlave" ? true : false;
+                        fin3 = tonsq(jkl) && i == "cerrarLlave" ? true : false;
+                        fin4 = Imp(jkl) && i == "comilla" ? true : false; 
                         jkl = "";
                         jkl1 = "";
                         jkl2 = "";
@@ -544,6 +540,14 @@ namespace AutomataAB
                 _asig = asig == "asignar" && _ide ? true : false;
                 _var = ide == "identificador" && _asig ? true : false;
                 return _var == true ? true : false;
+            }
+            bool Imp(string  bodi) {
+                bool  _bodi;
+                _bodi = bodi == "identificador" ? true : false;
+                if (_bodi) {
+                    inputMessage.AppendText("bodi");
+                }
+                return _bodi;
             }
             bool Si(string ide, string asig, string var) {
                 bool _ide, _asig, _var;

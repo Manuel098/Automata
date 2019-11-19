@@ -100,7 +100,7 @@ namespace AutomataAB
                 return tuple;                
             });
         }
-
+        public string runAuto(string a="   ") { return ""; }
         public static string Variable = @"(((?<declare>\s*(Num|Dec|Tex))\s+(?<id>[a-z]+[0-9]*)\s*(:=(?<value>\s*('[\s*\w\s*]*'|[\d]+)\s*))?;)|((?<declare>\s*(Num|Dec|Tex))\s+(?<id>([A-z]+\s*,\s*[A-z]+)*)s*;\s*))*$";
         public async Task<(bool, int, TypeMessage)> IsVar(string input)
         {
@@ -174,7 +174,14 @@ namespace AutomataAB
                 foreach (Match match in matchCollection) {
                     string token = match.Groups["declare"].Value.ToString().Replace(" ", null);
                     isprint = match.Groups["declare"].Success;
-                    if (isprint) break;
+                    if (isprint) 
+                    {
+                        AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"{match.Groups["print"].Value.Replace("'", null)}");
+                        Memory variable = new Memory(token);
+                        STACK.Add(variable);
+                        break;
+                    }
+                    
                     if (match.Groups["print"].Value != null) {
                         AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"{match.Groups["print"].Value.Replace("'", null)}");
                         Memory variable = new Memory(token);
