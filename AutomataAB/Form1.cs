@@ -482,7 +482,7 @@ namespace AutomataAB
             bool valid = false, dec = true, sent = false;
             // Variables para asignar.
             string jkl = "", jkl1 = "", jkl2 = "", jkl3 = "";
-            bool fin = false;
+            bool fin = false, fin2=false;
             Tokens.FindAll(i => {
                 Analizadorxd.AppendText(i + " ");
                 if (jkl == "" && sent == true && i == "identificador")
@@ -490,6 +490,8 @@ namespace AutomataAB
                 if (sent) {
                     if (jkl2 != "") {
                         fin = sentencia(jkl, jkl1, jkl2) && i == "Cierre" ? true : false;
+                        fin2 = Si(jkl, jkl1, jkl2) && i == "cerrarLlave" ? true : false;
+                        fin2 = tonsq(jkl) && i == "cerrarLlave" ? true : false;
                         jkl = "";
                         jkl1 = "";
                         jkl2 = "";
@@ -542,6 +544,18 @@ namespace AutomataAB
                 _asig = asig == "asignar" && _ide ? true : false;
                 _var = ide == "identificador" && _asig ? true : false;
                 return _var == true ? true : false;
+            }
+            bool Si(string ide, string asig, string var) {
+                bool _ide, _asig, _var;
+                _ide = ide == "identificador" ? true : false;
+                _asig = asig == "igualacion" && _ide ? true : false;
+                _var = ide == "identificador" && _asig ? true : false;
+                return _var == true ? true : false;
+            }
+            bool tonsq(string tipo) {
+                bool _tipo;
+                _tipo = tipo == "int" ? true : false;
+                return _tipo;
             }
         }
         private void Sintactico() {
@@ -616,6 +630,34 @@ namespace AutomataAB
                     inputMessage.AppendText(ruta);
                 }
             }
+        }
+        public async Task<(bool, int, TypeMessage)> Impbresion(string input) {
+            return await Task.Run(() => {
+                TypeMessage TP = TypeMessage.Normal;
+                bool Impbresion = false;
+                int line = 0;
+
+            for (int i= 0; i < line;i++) {
+                    string token = input;
+                    
+                    if (input.Contains("Imp")) {
+                        if (!input.Contains("(") || !input.Contains(")")) {
+                            Impbresion = false;
+                            AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"falta un parentesis.", TypeMessage.Error);
+                        }
+                        else if (!input.Contains(";")) {
+                            Impbresion = false;
+                            AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"falta ';'.", TypeMessage.Error);
+                        }
+                        else {
+                            Impbresion = false;
+                            AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"'Imp' no existe en el contexto actual.", TypeMessage.Error);
+                        }
+                    }
+                }
+                var tuple = (var_: Impbresion, lin: line, Tipe: TP);
+                return tuple;
+            });
         }
 
         #endregion
