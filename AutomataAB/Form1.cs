@@ -132,8 +132,15 @@ namespace AutomataAB
             STACK.AsyncClear();
             CONSOLEMESSAGE.MESSAGE.AsyncClear();
             var x = await IsConditonal(inputMessage.Text);
-            var y = await IsVar(inputMessage.Text);
-            var z = await IsPrint(inputMessage.Text);
+            int lines = inputMessage.Lines.Length;
+
+            for (int i = 0; i < lines; i++)
+            {
+                await IsVar(inputMessage.Lines[i], i+1);
+                await IsPrint(inputMessage.Lines[i], i+1);
+            }
+            
+           
             //string _IsConditional = (x||y||z) ? "condicional valido" : "Condicional no valido";
             if (x.Item1==false) 
             {
@@ -143,29 +150,6 @@ namespace AutomataAB
                     AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"La sentencia 'Si' no tiene el formato correcto,  LINEA: {x.Item2}", x.Item3);
                 else if (inputMessage.Text.Contains("SiTons"))
                     AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"La sentencia 'SiTons' no tiene el formato correcto,  LINEA: {x.Item2}", x.Item3);
-            }
-            if (!y.Item1==false)
-            {
-                /*if (_value.Contains(",,"))
-                {
-                    TP = TypeMessage.Error;
-                    CONSOLEMESSAGE.MESSAGE.AsyncAdd($"Uso de ',' invalido", TP);                   
-                }*/
-               /* else if (token.Contains("Tex"))
-                {
-                    string valuestr = _value.ToString();
-                    long a = valuestr.LongCount(i => i.ToString() == "'");
-                    if (a != 2)
-                    {
-                        TP = TypeMessage.Error;
-                        string msg = a < 2 ? $" falta(n) {(2 - a)} comilla(s)." : $" sobra(n) {(a - 2)} comilla(s).";
-                        CONSOLEMESSAGE.MESSAGE.AsyncAdd($"Se requieren 2 comillas que encapsulen la variable,{msg}.", TP);
-                    }
-                }*/
-            }
-            if (!z.Item1==false) 
-            {
-                
             }
             OnCons?.Invoke(CONSOLEMESSAGE.MESSAGE,STACK);                       
         }
@@ -666,6 +650,26 @@ namespace AutomataAB
 
         #endregion
 
+        [ConsoleInfo(Info = "intentando compilar..")]
+        public int GetLine(string str) 
+        {
+            inputMessage.Find(str);
+            int lines = inputMessage.Lines.Length;            
+            for (int i = 0; i < lines; i++)
+            {
+                if (inputMessage.Lines[i].Contains(str))
+                    return i+1;
+            }
+            return 0;  
+        }
+    }
+    [AttributeUsage(AttributeTargets.Method,AllowMultiple =false,Inherited =false)]
+    class ConsoleInfoAttribute : Attribute 
+    {
+        public string Info { get; set; }  
+        public int Cant { get; set; }
+
     }
 }
 
+ 

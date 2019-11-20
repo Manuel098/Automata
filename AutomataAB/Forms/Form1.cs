@@ -30,21 +30,21 @@ namespace AutomataAB
             switch (algo)
             {
                 case TypeMessage.Warning:
-                    Sufix = "Advertencia->";
+                    Sufix = "ADVERTENCIA->";
                     break;
                 case TypeMessage.Error:
-                    Sufix = "Error->";
+                    Sufix = "ERROR->";
                     break;
                 default:
-                    Sufix = "Consola->";
+                    Sufix = "CONSOLA->";
                     break;
             }
             var msg = $"{Sufix}{dato}";
             t.Add(msg);
         });
-        public async Task<(bool,int,TypeMessage)> IsConditonal(string input)
-        {           
-            return await Task.Run(() => {
+        public async Task<(bool,int,TypeMessage)> IsConditonal(string input)=>
+        await Task.Run(() => 
+        {
                 TypeMessage TP = TypeMessage.Normal;
 
                 var @if = @"((?<token>((Si|SiTons)|(Tons)))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*\})*";
@@ -99,17 +99,17 @@ namespace AutomataAB
                 var tuple = (var_: iscond, lin: line, Tipe: TP);
                 return tuple;                
             });
-        }
+        
+        
         public string runAuto(string a="   ") { return ""; }
-        public static string Variable = @"(((?<declare>\s*(Num|Dec|Tex))\s+(?<id>[a-z]+[0-9]*)\s*(:=(?<value>\s*('[\s*\w\s*]*'|[\d]+)\s*))?;)|((?<declare>\s*(Num|Dec|Tex))\s+(?<id>([A-z]+\s*,\s*[A-z]+)*)s*;\s*))*$";
-        public async Task<(bool, int, TypeMessage)> IsVar(string input)
+        public static string Variable = @"(((?<declare>\s*(Num|Dec|Tex))\s+(?<id>[a-z]+[0-9]*)\s*(:=(?<value>\s*('[\s*\w\s*]*'|[\d]+)\s*))?;)|((?<declare>\s*(Num|Dec|Tex))\s+(?<id>([A-z]+\s*,{1}\s*[A-z]+)*)s*;\s*))*$";
+        public async Task<(bool, int, TypeMessage)> IsVar(string input, int line)
         {
             TypeMessage TP = TypeMessage.Normal;
 
             var @var = Variable;
             Regex rgx = new Regex(@var);
             MatchCollection matchCollection = Regex.Matches(input,@var);
-            int line = 0;
             bool isvar = true;
             foreach (Match match in matchCollection)
             {
@@ -122,12 +122,19 @@ namespace AutomataAB
                     if (_value.Contains("'")) 
                     {
                         TP = TypeMessage.Error;
-                        AsyncAdd(CONSOLEMESSAGE.MESSAGE,$"El tipo de dato Num solo sirve para numeros enteros.",TP);
+                        AsyncAdd(CONSOLEMESSAGE.MESSAGE,$"El tipo de dato Num solo sirve para numeros enteros. Linea: {line}",TP);                        
                         break;
                     }
-                    else if(!input.Contains(";") && (input.Contains("Si") || input.Contains("Tons") || input.Contains("SiTons"))) {
+                    else if(!input.Contains(";")) 
+                    {
                         TP = TypeMessage.Error;
-                        AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"Falta ';'", TP);
+                        AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"Se esperaba ';' linea {line}", TP);
+                        break;
+                    }
+                    if (input.Contains(",,"))
+                    {
+                        TP = TypeMessage.Error;
+                        AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"Error de sintaxis ',' inesperado. Linea: {line}", TP);
                         break;
                     }
                 }
@@ -136,20 +143,48 @@ namespace AutomataAB
                     if (!input.Contains("'")) 
                     {                        
                         TP = TypeMessage.Error;                     
-                        AsyncAdd(CONSOLEMESSAGE.MESSAGE,$"Se esperaba el uso de comillas simples par la variable de tipo Tex", TP);
+                        AsyncAdd(CONSOLEMESSAGE.MESSAGE,$"Se esperaba el uso de comillas simples par la variable de tipo Tex. linea {line}", TP);
                         break;
                     }
-                    else if (!input.Contains(";") && (input.Contains("Si") || input.Contains("Tons") || input.Contains("SiTons"))) {
+                    else if (!input.Contains(";")) 
+                    {
                         TP = TypeMessage.Error;
-                        AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"Falta ';'", TP);
+                        AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"Se esperaba ';'. Linea {line}", TP);
+                        break;
+                    }
+                    if (input.Contains(",,"))
+                    {
+                        TP = TypeMessage.Error;
+                        AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"Error de sintaxis ',' inesperado. Linea: {line}", TP);
+                        break;
+                    }                 
+                }
+                else if (input.Contains("Dec"))
+                {
+                    if (_value.Contains("'"))
+                    {
+                        TP = TypeMessage.Error;
+                        AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"El tipo de dato Dec solo sirve para numeros enteros. Linea: {line}", TP);
+                        break;
+                    }
+                    else if (!input.Contains(";"))
+                    {
+                        TP = TypeMessage.Error;
+                        AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"Se esperaba ';' linea {line}", TP);
+                        break;
+                    }
+                    if (input.Contains(",,"))
+                    {
+                        TP = TypeMessage.Error;
+                        AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"Error de sintaxis ',' inesperado. Linea: {line}", TP);
                         break;
                     }
                 }
-                if (match.Groups["declare"].Success) {
+                if (match.Groups["declare"].Success)
+                {
                     Memory variable = new Memory(token, id, _value);
                     STACK.Add(variable);
                 }
-                
             }
             foreach (Match match in matchCollection) {
                 isvar = match.Groups["declare"].Success;
@@ -160,7 +195,7 @@ namespace AutomataAB
                 return tuple;                
             });
         }
-        public async Task<(bool, int, TypeMessage)> IsPrint(string input)
+        public async Task<(bool, int, TypeMessage)> IsPrint(string input, int line)
         {            
             return await Task.Run(() => 
             {
@@ -168,7 +203,6 @@ namespace AutomataAB
                 bool isprint = false;
                 var print = @"((?<declare>\s*(Imp))\s*\((?<print>('[\s*\w\s*]*'))\s*\)\s*;)*\s*$";
                 Regex rgx = new Regex(print);
-                int line = 0;
                 MatchCollection matchCollection = Regex.Matches(input, print);
 
                 foreach (Match match in matchCollection) {
@@ -190,11 +224,11 @@ namespace AutomataAB
                     if (input.Contains("Imp")) {
                         if (!input.Contains("(") || !input.Contains(")")) {
                             isprint = false;
-                            AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"falta un parentesis.", TypeMessage.Error);
+                            AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"se esperaba un parentesis. Linea: {line}", TypeMessage.Error);
                         }
                         else if (!input.Contains(";")) {
                             isprint = false;
-                            AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"falta ';'.", TypeMessage.Error);
+                            AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"se esperaba ';' Linea: {line}", TypeMessage.Error);
                         }
                         if(rgx.IsMatch(input)) 
                         {
@@ -203,7 +237,65 @@ namespace AutomataAB
                         else 
                         {
                             isprint = false;
-                            AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"'Imp' no existe en el contexto actual.", TypeMessage.Error);
+                            AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"'Imp' no existe en el contexto actual. Linea: {line}", TypeMessage.Error);
+                        }
+                    }
+                }
+                var tuple = (var_: isprint, lin: line, Tipe: TP);
+                return tuple;
+            });
+        }
+        public async Task<(bool, int, TypeMessage)> IsFor(string input, int line)
+        {
+            return await Task.Run(() =>
+            {
+                TypeMessage TP = TypeMessage.Normal;
+                bool isprint = false;
+                var @if = @"((?<token>((Si|SiTons)|(Tons)))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*\})*";
+                var ifrecursiv = @"(?<token>((Si|SiTons)|(Tons))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*(" + @if + Variable + @")*\s*\})*";
+                var ifrecursive = @"(?<token>((Si|SiTons)|(Tons))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*" + ifrecursiv + @"\s*\})*";
+                
+                Regex rgx = new Regex(@"((?<token>(Lop))\s*(?<condition>((((?<declare>\s*(Num|Dec|Tex))\s+(?<id>[a-z]+[0-9]*)\s*(:=(?<value>\s*('[\s*\w\s*]*'|[\d]+)\s*))?;)))) | (\s+(?<id>[a-z]+[0-9]*)\s*(:=(?<value>\s*('[\s*\w\s*]*'|[\d]+)\s*))?;) \s*(?<cond>[a-z]+[0-9]*(>|<|==)\s*[0-9]\s*)\s*;\s* (?<inc>([a-z]+[0-9]*)\s*(\+\+)|(\-\-))\s*;\s*\{\s*\s*\}\s*)");
+                MatchCollection matchCollection = Regex.Matches(input, ifrecursive);
+
+                foreach (Match match in matchCollection)
+                {
+                    string token = match.Groups["declare"].Value.ToString().Replace(" ", null);
+                    isprint = match.Groups["declare"].Success;
+                    if (isprint)
+                    {
+                        AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"{match.Groups["print"].Value.Replace("'", null)}");
+                        Memory variable = new Memory(token);
+                        STACK.Add(variable);
+                        break;
+                    }
+
+                    if (match.Groups["print"].Value != null)
+                    {
+                        AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"{match.Groups["print"].Value.Replace("'", null)}");
+                        Memory variable = new Memory(token);
+                        STACK.Add(variable);
+                    }
+                    if (input.Contains("Imp"))
+                    {
+                        if (!input.Contains("(") || !input.Contains(")"))
+                        {
+                            isprint = false;
+                            AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"falta un parentesis. linea {line}", TypeMessage.Error);
+                        }
+                        else if (!input.Contains(";"))
+                        {
+                            isprint = false;
+                            AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"falta ';' linea {line}", TypeMessage.Error);
+                        }
+                        if (rgx.IsMatch(input))
+                        {
+                            isprint = true;
+                        }
+                        else
+                        {
+                            isprint = false;
+                            AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"'Imp' no existe en el contexto actual. linea {line}", TypeMessage.Error);
                         }
                     }
                 }
