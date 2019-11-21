@@ -10,31 +10,47 @@ using System.Windows.Forms;
 
 namespace AutomataAB
 {
+  /*  public static class extension 
+    { 
+        public static void LambdaDelete<T>(this List<T> ls, Action<int> p) 
+        { 
+           
+        }
+    
+    }*/
     public partial class ConsoleForm : Form
     {
         public static Form1 frm;
-        
+        public TimeSpan _Time { get; set; }
         public ConsoleForm(Form1 f)
         {
             frm = f;
             InitializeComponent();
         }
-
+        
         private void ConsoleForm_Load(object sender, EventArgs e)
         {
             
         }
-        public void PaintText(List<string> err ,List<Memory> mem) 
+        public void PaintText(List<string> err, List<Memory> mem)
         {
             compilderdat.Rows.Clear();
             Analizadorxd.Text = null;
-            foreach (var dat in mem) 
+
+            mem.FindAll(i => {
+
+                if (string.IsNullOrEmpty(i.ID) && string.IsNullOrEmpty(i.TOKEN) && string.IsNullOrEmpty(i.VALUE)) mem.Remove(i);
+                return true;
+            });
+
+            foreach(var dat in mem) 
             {
-                if (dat.ID == null && dat.TOKEN == null && dat.VALUE == null) continue;
-                else compilderdat.Rows.Add(dat.TOKEN, dat.ID, dat.VALUE);
-            }                           
+                compilderdat.Rows.Add(dat.TOKEN, dat.ID, dat.VALUE);
+            }
             foreach(var e in err)
             Analizadorxd.AppendText(e+"\n");
+
+            lblComp.Text = $"Tiempo de compilación: {_Time}";
         }
 
         private void ConsoleForm_FormClosing(object sender, FormClosingEventArgs e)

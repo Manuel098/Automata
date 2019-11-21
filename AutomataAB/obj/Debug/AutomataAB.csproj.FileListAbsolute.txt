@@ -74,3 +74,16 @@ C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\obj\Debug\AutomataAB
 D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\Automata\AutomataAB\bin\Debug\System.ValueTuple.dll
 D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\Automata\AutomataAB\bin\Debug\System.ValueTuple.xml
 D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\Automata\AutomataAB\obj\Debug\AutomataAB.csproj.CopyComplete
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\UnityEditor.dll
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\UnityEngine.dll
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\Unity.Cecil.dll
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\Unity.SerializationLogic.dll
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\Unity.DataContract.dll
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\ExCSS.Unity.dll
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\Unity.Legacy.NRefactory.dll
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\Unity.UNetWeaver.dll
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\Unity.CecilTools.dll
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\Unity.Cecil.Pdb.dll
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\Unity.Cecil.Mdb.dll
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\UnityEditor.xml
+C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\UnityEngine.xml

@@ -38,6 +38,7 @@
             this.TOKEN = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.VALUE = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lblComp = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.compilderdat)).BeginInit();
@@ -51,10 +52,11 @@
             this.Analizadorxd.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Analizadorxd.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Analizadorxd.ForeColor = System.Drawing.SystemColors.Window;
-            this.Analizadorxd.Location = new System.Drawing.Point(0, 51);
+            this.Analizadorxd.Location = new System.Drawing.Point(0, 33);
+            this.Analizadorxd.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Analizadorxd.Name = "Analizadorxd";
             this.Analizadorxd.ReadOnly = true;
-            this.Analizadorxd.Size = new System.Drawing.Size(692, 409);
+            this.Analizadorxd.Size = new System.Drawing.Size(461, 234);
             this.Analizadorxd.TabIndex = 13;
             this.Analizadorxd.Text = "";
             // 
@@ -63,10 +65,9 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(44)))), ((int)(((byte)(50)))));
             this.panel1.Controls.Add(this.label1);
-            this.panel1.Location = new System.Drawing.Point(0, 469);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.panel1.Location = new System.Drawing.Point(0, 305);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(692, 43);
+            this.panel1.Size = new System.Drawing.Size(461, 28);
             this.panel1.TabIndex = 14;
             // 
             // label1
@@ -75,10 +76,9 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label1.Location = new System.Drawing.Point(268, 6);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(179, 4);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(164, 29);
+            this.label1.Size = new System.Drawing.Size(113, 20);
             this.label1.TabIndex = 1;
             this.label1.Text = "COMPILADO";
             // 
@@ -88,9 +88,8 @@
             this.panel2.Controls.Add(this.lblconsole);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(692, 43);
+            this.panel2.Size = new System.Drawing.Size(461, 28);
             this.panel2.TabIndex = 15;
             // 
             // lblconsole
@@ -100,10 +99,9 @@
             this.lblconsole.AutoSize = true;
             this.lblconsole.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblconsole.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lblconsole.Location = new System.Drawing.Point(268, 8);
-            this.lblconsole.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblconsole.Location = new System.Drawing.Point(179, 5);
             this.lblconsole.Name = "lblconsole";
-            this.lblconsole.Size = new System.Drawing.Size(137, 29);
+            this.lblconsole.Size = new System.Drawing.Size(93, 20);
             this.lblconsole.TabIndex = 0;
             this.lblconsole.Text = "CONSOLA";
             // 
@@ -129,12 +127,11 @@
             this.TOKEN,
             this.ID,
             this.VALUE});
-            this.compilderdat.Location = new System.Drawing.Point(0, 522);
-            this.compilderdat.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.compilderdat.Location = new System.Drawing.Point(0, 339);
             this.compilderdat.MultiSelect = false;
             this.compilderdat.Name = "compilderdat";
             this.compilderdat.ReadOnly = true;
-            this.compilderdat.Size = new System.Drawing.Size(692, 166);
+            this.compilderdat.Size = new System.Drawing.Size(461, 108);
             this.compilderdat.TabIndex = 16;
             // 
             // TOKEN
@@ -155,17 +152,27 @@
             this.VALUE.Name = "VALUE";
             this.VALUE.ReadOnly = true;
             // 
+            // lblComp
+            // 
+            this.lblComp.AutoSize = true;
+            this.lblComp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblComp.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.lblComp.Location = new System.Drawing.Point(11, 280);
+            this.lblComp.Name = "lblComp";
+            this.lblComp.Size = new System.Drawing.Size(0, 15);
+            this.lblComp.TabIndex = 17;
+            // 
             // ConsoleForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(43)))));
-            this.ClientSize = new System.Drawing.Size(692, 692);
+            this.ClientSize = new System.Drawing.Size(461, 450);
+            this.Controls.Add(this.lblComp);
             this.Controls.Add(this.compilderdat);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.Analizadorxd);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "ConsoleForm";
             this.Text = "C O N S O L A";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ConsoleForm_FormClosing);
@@ -176,6 +183,7 @@
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.compilderdat)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -190,5 +198,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn TOKEN;
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn VALUE;
+        private System.Windows.Forms.Label lblComp;
     }
 }

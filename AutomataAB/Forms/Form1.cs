@@ -10,8 +10,8 @@ using System.Threading;
 using System.Windows.Forms;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Diagnostics;
 
+using static UnityEditor.ExpressionEvaluator;
 
 namespace AutomataAB
 {
@@ -48,7 +48,7 @@ namespace AutomataAB
                 TypeMessage TP = TypeMessage.Normal;
 
                 var @if = @"((?<token>((Si|SiTons)|(Tons)))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*\})*";
-                var ifrecursiv = @"(?<token>((Si|SiTons)|(Tons))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*("+@if+Variable+@")*\s*\})*";
+                var ifrecursiv = @"(?<token>((Si|SiTons)|(Tons))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*(("+@if+@")("+Variable+@"))*\s*\})*";
                 var ifrecursive = @"(?<token>((Si|SiTons)|(Tons))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*" + ifrecursiv + @"\s*\})*";
                 Regex rgx = new Regex(ifrecursive, RegexOptions.Singleline);
                 MatchCollection matchCollection = Regex.Matches(input, ifrecursive);
@@ -58,7 +58,7 @@ namespace AutomataAB
                     string token = match.Groups["token"].Value.ToString().Replace(" ", null);
                     string id = match.Groups["condition"].Value.ToString().Replace(" ", null);
                     iscond = match.Groups["token"].Success;
-                    if (iscond) break;
+                    //if (iscond) break;
                     if (input.Contains("Tons")) {
                         if (!string.IsNullOrEmpty(id) || input.Contains("(") || input.Contains(")")) {
                             line = match.Groups["token"].Index;
@@ -91,9 +91,16 @@ namespace AutomataAB
                             break;
                         }
                     }
-                    if (match.Groups["token"].Success) {
-                        Memory variable = new Memory(token, id);
+                    if (match.Groups["token"].Success) 
+                    {
+                    string _token=null;
+                    if (token.Contains("Si")) _token = "Si";
+                    else if (token.Contains("SiTons")) _token = "SiTons";
+                    else if (token.Contains("SiTons")) _token = "Tons";
+
+                    Memory variable = new Memory(_token, id);
                         STACK.Add(variable);
+                        break;
                     }
                 }
                 var tuple = (var_: iscond, lin: line, Tipe: TP);
@@ -102,7 +109,7 @@ namespace AutomataAB
         
         
         public string runAuto(string a="   ") { return ""; }
-        public static string Variable = @"(((?<declare>\s*(Num|Dec|Tex))\s+(?<id>[a-z]+[0-9]*)\s*(:=(?<value>\s*('[\s*\w\s*]*'|[\d]+)\s*))?;)|((?<declare>\s*(Num|Dec|Tex))\s+(?<id>([A-z]+\s*,{1}\s*[A-z]+)*)s*;\s*))*$";
+        public static string Variable = @"(((?<declare>\s*(Num|Dec|Tex))\s+(?<id>[a-z]+[0-9]*)\s*(:=(?<value>\s*('[\s*\w\s*]*'|[\d]+)\s*))?;)|((?<declare>\s*(Num|Dec|Tex))\s+(?<id>([A-z]+\s*,\s*[A-z]+)*)\s*;\s*)|((?<id>[a-z]+[0-9]*)\s*:=\s*(?<value>('[\s*\w\s*]*')|([\d]+(\s*[/\+\*\-]\s*[\d\w]+)*)))\s*;\s*)*$";
         public async Task<(bool, int, TypeMessage)> IsVar(string input, int line)
         {
             TypeMessage TP = TypeMessage.Normal;
@@ -180,10 +187,26 @@ namespace AutomataAB
                         break;
                     }
                 }
-                if (match.Groups["declare"].Success)
+                if (match.Groups["declare"].Success || match.Groups["id"].Success || match.Groups["value"].Success)
                 {
-                    Memory variable = new Memory(token, id, _value);
+                    Memory variable;
+                    float _Expression;
+                    bool isexp=true;
+                    if((_value as string).Contains("'")) 
+                    variable = new Memory(token, id, _value);
+                    else 
+                    {
+                        isexp = Evaluate<float>(_value,out _Expression);
+                        variable=isexp? new Memory(token, id, _Expression): new Memory(token, id, _value.ToString().Replace(" ", null));
+                    }
+                    if(isexp)
                     STACK.Add(variable);
+                    else 
+                    {
+                        TP = TypeMessage.Error;
+                        AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"La expresion: {_value}, no es un termino matematico valido. Linea: {line}", TP);
+                        break;
+                    }
                 }
             }
             foreach (Match match in matchCollection) {

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace AutomataAB
 {
@@ -14,6 +15,7 @@ namespace AutomataAB
         public string TOKEN { get; set; }
         public string ID { get; set; }
         public dynamic VALUE { get; set; }
+       
         public Memory(string token, string id = null, dynamic value = null)
         {
             TOKEN = token;
@@ -35,7 +37,8 @@ namespace AutomataAB
         string[] palabras;
         public int iter = 0;
         public event Action<List<string>, List<Memory>> OnCons;
-        public List<Memory> STACK = new List<Memory>();        
+        public List<Memory> STACK = new List<Memory>();
+        public ConsoleForm csf;
         public struct CONSOLEMESSAGE 
         {
             public static List<string> MESSAGE = new List<string>();
@@ -128,6 +131,9 @@ namespace AutomataAB
 
         private async void COMPILAR_Click_1(object sender, EventArgs e)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             runAuto(inputMessage.Text);
             STACK.AsyncClear();
             CONSOLEMESSAGE.MESSAGE.AsyncClear();
@@ -151,15 +157,17 @@ namespace AutomataAB
                 else if (inputMessage.Text.Contains("SiTons"))
                     AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"La sentencia 'SiTons' no tiene el formato correcto,  LINEA: {x.Item2}", x.Item3);
             }
-            OnCons?.Invoke(CONSOLEMESSAGE.MESSAGE,STACK);                       
+            OnCons?.Invoke(CONSOLEMESSAGE.MESSAGE,STACK);
+            stopwatch.Stop();
+            csf._Time = stopwatch.Elapsed;
         }
-         
+
         private void OpenConsole_Click(object sender, EventArgs e)
         {
             foreach(Form a in Application.OpenForms)             
                 if (a.Name == "ConsoleForm") return;
             
-            ConsoleForm csf = new ConsoleForm(this);
+            csf = new ConsoleForm(this);
             OnCons += csf.PaintText;
             csf.Show();
         }
