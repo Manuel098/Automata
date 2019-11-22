@@ -21,7 +21,7 @@ namespace AutomataAB
     public partial class ConsoleForm : Form
     {
         public static Form1 frm;
-        public TimeSpan _Time { get; set; }
+        public TimeSpan? _Time { get; set; }
         public ConsoleForm(Form1 f)
         {
             frm = f;

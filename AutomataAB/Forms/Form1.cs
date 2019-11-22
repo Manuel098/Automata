@@ -10,7 +10,6 @@ using System.Threading;
 using System.Windows.Forms;
 using System.IO;
 using System.Text.RegularExpressions;
-
 using static UnityEditor.ExpressionEvaluator;
 
 namespace AutomataAB
@@ -18,12 +17,12 @@ namespace AutomataAB
     public enum TypeMessage { Normal, Warning, Error };
     static class Extend    
     {        
-        public async static void AsyncClear<T>(this List<T> t) => await Task.Run(() => t.Clear());
-        
+        public async static void AsyncClear<T>(this List<T> t) => await Task.Run(() => t.Clear());        
     }
     //Other 
     public partial class Form1 : Form
     {
+        public string IfArgument { get; set; }
         public async static void AsyncAdd (List<string> t, string dato, TypeMessage algo = TypeMessage.Normal) => await Task.Run(() =>
         {
             string Sufix = null;
@@ -42,18 +41,20 @@ namespace AutomataAB
             var msg = $"{Sufix}{dato}";
             t.Add(msg);
         });
+        
+        //This analize all the text
         public async Task<(bool,int,TypeMessage)> IsConditonal(string input)=>
         await Task.Run(() => 
         {
                 TypeMessage TP = TypeMessage.Normal;
-
-                var @if = @"((?<token>((Si|SiTons)|(Tons)))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*\})*";
-                var ifrecursiv = @"(?<token>((Si|SiTons)|(Tons))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*(("+@if+@")("+Variable+@"))*\s*\})*";
-                var ifrecursive = @"(?<token>((Si|SiTons)|(Tons))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*" + ifrecursiv + @"\s*\})*";
+            
+           //     var @if = @"((?<token>((Si|SiTons)|(Tons)))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*\})*";
+           //     var ifrecursiv = @"(?<token>((Si|SiTons)|(Tons))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*(("+@if+@")("+Variable+@"))*\s*\})*";
+                var ifrecursive = @"(?<token>((Si|SiTons)|(Tons))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{(?<argument>\s*\w*\W*\s*)\})*";
                 Regex rgx = new Regex(ifrecursive, RegexOptions.Singleline);
                 MatchCollection matchCollection = Regex.Matches(input, ifrecursive);
-                int line = 0;
                 bool iscond = true;
+                int line = 0;
                 foreach (Match match in matchCollection) {
                     string token = match.Groups["token"].Value.ToString().Replace(" ", null);
                     string id = match.Groups["condition"].Value.ToString().Replace(" ", null);
@@ -64,7 +65,6 @@ namespace AutomataAB
                             line = match.Groups["token"].Index;
                             TP = TypeMessage.Error;
                             AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"La sentencia 'Tons' no puede contener argumentos,  LINEA: {line}", TP);
-
                             break;
                         }
                         else if ((!input.Contains("{") || (!input.Contains("}")))) {
@@ -75,21 +75,21 @@ namespace AutomataAB
                             break;
                         }
                     }
-                    else if (input.Contains("Si") || input.Contains("Si")) {
+                    else if (input.Contains("Si")) {
                         if ((input.Contains("(") && !input.Contains(")"))) {
                             line = match.Groups["token"].Index;
                             TP = TypeMessage.Error;
                             AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"La sentencia 'Si' no tiene parentesis de cierre,  LINEA: {line}", TP);
-
                             break;
                         }
                         else if ((!input.Contains("(") && input.Contains(")"))) {
                             line = match.Groups["token"].Index;
                             TP = TypeMessage.Error;
                             AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"La sentencia 'Si' no tiene parentesis de apertura,  LINEA: {line}", TP);
-
                             break;
                         }
+                    IfArgument = match.Groups["argument"].Value.ToString();
+                    MessageBox.Show(IfArgument);
                     }
                     if (match.Groups["token"].Success) 
                     {
@@ -106,8 +106,35 @@ namespace AutomataAB
                 var tuple = (var_: iscond, lin: line, Tipe: TP);
                 return tuple;                
             });
-        
-        
+
+        //This analize line x line
+        public async void IsConditonal(string input, int line) =>
+        await Task.Run(() =>
+        {
+            TypeMessage TP = TypeMessage.Normal;
+                if (input.Contains("Si") && !input.Contains("Tons"))
+                {
+                    
+                }
+                else if (input.Contains("{"))
+                {
+                    
+                }
+                else if (input.Contains("}"))
+                {
+
+                }
+                else if (input.Contains("Tons") && !input.Contains("Si"))
+                {
+
+                }
+                else if (input.Contains("Si") && input.Contains("Tons"))
+                {
+                    
+                }            
+        });
+
+
         public string runAuto(string a="   ") { return ""; }
         public static string Variable = @"(((?<declare>\s*(Num|Dec|Tex))\s+(?<id>[a-z]+[0-9]*)\s*(:=(?<value>\s*('[\s*\w\s*]*'|[\d]+)\s*))?;)|((?<declare>\s*(Num|Dec|Tex))\s+(?<id>([A-z]+\s*,\s*[A-z]+)*)\s*;\s*)|((?<id>[a-z]+[0-9]*)\s*:=\s*(?<value>('[\s*\w\s*]*')|([\d]+(\s*[/\+\*\-]\s*[\d\w]+)*)))\s*;\s*)*$";
         public async Task<(bool, int, TypeMessage)> IsVar(string input, int line)

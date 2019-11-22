@@ -144,6 +144,7 @@ namespace AutomataAB
             {
                 await IsVar(inputMessage.Lines[i], i+1);
                 await IsPrint(inputMessage.Lines[i], i+1);
+                IsConditonal(inputMessage.Lines[i], i + 1);
             }
             
            
@@ -159,7 +160,7 @@ namespace AutomataAB
             }
             OnCons?.Invoke(CONSOLEMESSAGE.MESSAGE,STACK);
             stopwatch.Stop();
-            csf._Time = stopwatch.Elapsed;
+            if(csf!=null) csf._Time=stopwatch.Elapsed;
         }
 
         private void OpenConsole_Click(object sender, EventArgs e)
