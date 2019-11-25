@@ -15,6 +15,7 @@ using static UnityEditor.ExpressionEvaluator;
 namespace AutomataAB
 {
     public enum TypeMessage { Normal, Warning, Error };
+
     static class Extend    
     {        
         public async static void AsyncClear<T>(this List<T> t) => await Task.Run(() => t.Clear());        
@@ -22,6 +23,7 @@ namespace AutomataAB
     //Other 
     public partial class Form1 : Form
     {
+        public string ActualState;
         public string IfArgument { get; set; }
         public async static void AsyncAdd (List<string> t, string dato, TypeMessage algo = TypeMessage.Normal) => await Task.Run(() =>
         {
@@ -46,16 +48,18 @@ namespace AutomataAB
         public async Task<(bool,int,TypeMessage)> IsConditonal(string input)=>
         await Task.Run(() => 
         {
-                TypeMessage TP = TypeMessage.Normal;
-            
-           //     var @if = @"((?<token>((Si|SiTons)|(Tons)))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*\})*";
-           //     var ifrecursiv = @"(?<token>((Si|SiTons)|(Tons))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*(("+@if+@")("+Variable+@"))*\s*\})*";
-                var ifrecursive = @"(?<token>((Si|SiTons)|(Tons))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{(?<argument>\s*\w*\W*\s*)\})*";
-                Regex rgx = new Regex(ifrecursive, RegexOptions.Singleline);
-                MatchCollection matchCollection = Regex.Matches(input, ifrecursive);
-                bool iscond = true;
-                int line = 0;
-                foreach (Match match in matchCollection) {
+            #region logic
+            TypeMessage TP = TypeMessage.Normal;
+
+            //     var @if = @"((?<token>((Si|SiTons)|(Tons)))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*\})*";
+            //     var ifrecursiv = @"(?<token>((Si|SiTons)|(Tons))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*(("+@if+@")("+Variable+@"))*\s*\})*";
+            var ifrecursive = @"(?<token>((Si|SiTons)|(Tons))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{(?<argument>\s*\w*\W*\s*)\})*";
+            Regex rgx = new Regex(ifrecursive, RegexOptions.Singleline);
+            MatchCollection matchCollection = Regex.Matches(input, ifrecursive);
+            bool iscond = true;
+            int line = 0; 
+            #endregion
+            foreach (Match match in matchCollection) {
                     string token = match.Groups["token"].Value.ToString().Replace(" ", null);
                     string id = match.Groups["condition"].Value.ToString().Replace(" ", null);
                     iscond = match.Groups["token"].Success;
@@ -89,7 +93,7 @@ namespace AutomataAB
                             break;
                         }
                     IfArgument = match.Groups["argument"].Value.ToString();
-                    MessageBox.Show(IfArgument);
+                 //   MessageBox.Show(IfArgument);
                     }
                     if (match.Groups["token"].Success) 
                     {
@@ -141,10 +145,12 @@ namespace AutomataAB
         {
             TypeMessage TP = TypeMessage.Normal;
 
+            #region logic
             var @var = Variable;
             Regex rgx = new Regex(@var);
-            MatchCollection matchCollection = Regex.Matches(input,@var);
-            bool isvar = true;
+            MatchCollection matchCollection = Regex.Matches(input, @var);
+            bool isvar = true; 
+            #endregion
             foreach (Match match in matchCollection)
             {
                 string token = match.Groups["declare"].Value.ToString().Replace(" ", null);
@@ -174,11 +180,17 @@ namespace AutomataAB
                 }
                 else if (input.Contains("Tex")) 
                 {
-                    if (!input.Contains("'")) 
-                    {                        
-                        TP = TypeMessage.Error;                     
-                        AsyncAdd(CONSOLEMESSAGE.MESSAGE,$"Se esperaba el uso de comillas simples par la variable de tipo Tex. linea {line}", TP);
-                        break;
+                    if (!input.Contains("'") && match.Groups["value"].Success) 
+                    {
+                        
+                        long count = input.Where(x => x == '\u0027').LongCount();
+                        if (count != 2) 
+                        {
+                            TP = TypeMessage.Error;
+                            AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"Se esperaba el uso de comillas simples par la variable de tipo Tex, hay {count} comilla(s). linea {line}", TP);
+                            break;
+                        }
+                        
                     }
                     else if (!input.Contains(";")) 
                     {
@@ -230,9 +242,12 @@ namespace AutomataAB
                     STACK.Add(variable);
                     else 
                     {
-                        TP = TypeMessage.Error;
-                        AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"La expresion: {_value}, no es un termino matematico valido. Linea: {line}", TP);
-                        break;
+                        if (match.Groups["value"].Success) {
+
+                            TP = TypeMessage.Error;
+                            AsyncAdd(CONSOLEMESSAGE.MESSAGE, $"La expresion: {_value}, no es un termino matematico valido. Linea: {line}", TP);
+                            break;
+                        }                        
                     }
                 }
             }
@@ -245,16 +260,17 @@ namespace AutomataAB
                 return tuple;                
             });
         }
-        public async Task<(bool, int, TypeMessage)> IsPrint(string input, int line)
-        {            
-            return await Task.Run(() => 
+        public async Task<(bool, int, TypeMessage)> IsPrint(string input, int line) =>           
+            await Task.Run(() => 
             {
+                #region logic
                 TypeMessage TP = TypeMessage.Normal;
                 bool isprint = false;
                 var print = @"((?<declare>\s*(Imp))\s*\((?<print>('[\s*\w\s*]*'))\s*\)\s*;)*\s*$";
                 Regex rgx = new Regex(print);
                 MatchCollection matchCollection = Regex.Matches(input, print);
 
+                #endregion
                 foreach (Match match in matchCollection) {
                     string token = match.Groups["declare"].Value.ToString().Replace(" ", null);
                     isprint = match.Groups["declare"].Success;
@@ -294,20 +310,22 @@ namespace AutomataAB
                 var tuple = (var_: isprint, lin: line, Tipe: TP);
                 return tuple;
             });
-        }
+        
         public async Task<(bool, int, TypeMessage)> IsFor(string input, int line)
         {
             return await Task.Run(() =>
             {
+                #region logic
                 TypeMessage TP = TypeMessage.Normal;
                 bool isprint = false;
                 var @if = @"((?<token>((Si|SiTons)|(Tons)))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*\})*";
                 var ifrecursiv = @"(?<token>((Si|SiTons)|(Tons))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*(" + @if + Variable + @")*\s*\})*";
                 var ifrecursive = @"(?<token>((Si|SiTons)|(Tons))\s*(?<condition>(\(\s*([A-z]+\d*\s*[=!><]=\s*('[\s*A-z\s*]*'|[\d]+))\s*\)\s*))?\{\s*" + ifrecursiv + @"\s*\})*";
-                
+
                 Regex rgx = new Regex(@"((?<token>(Lop))\s*(?<condition>((((?<declare>\s*(Num|Dec|Tex))\s+(?<id>[a-z]+[0-9]*)\s*(:=(?<value>\s*('[\s*\w\s*]*'|[\d]+)\s*))?;)))) | (\s+(?<id>[a-z]+[0-9]*)\s*(:=(?<value>\s*('[\s*\w\s*]*'|[\d]+)\s*))?;) \s*(?<cond>[a-z]+[0-9]*(>|<|==)\s*[0-9]\s*)\s*;\s* (?<inc>([a-z]+[0-9]*)\s*(\+\+)|(\-\-))\s*;\s*\{\s*\s*\}\s*)");
                 MatchCollection matchCollection = Regex.Matches(input, ifrecursive);
 
+                #endregion
                 foreach (Match match in matchCollection)
                 {
                     string token = match.Groups["declare"].Value.ToString().Replace(" ", null);

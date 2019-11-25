@@ -87,3 +87,15 @@ C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\Unity.Ceci
 C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\Unity.Cecil.Mdb.dll
 C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\UnityEditor.xml
 C:\Users\Gerardo Avila\Documents\GitHub\Automata\AutomataAB\bin\Debug\UnityEngine.xml
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\Automata\AutomataAB\bin\Debug\UnityEngine.dll
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\Automata\AutomataAB\bin\Debug\Unity.Cecil.dll
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\Automata\AutomataAB\bin\Debug\Unity.SerializationLogic.dll
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\Automata\AutomataAB\bin\Debug\Unity.DataContract.dll
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\Automata\AutomataAB\bin\Debug\ExCSS.Unity.dll
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\Automata\AutomataAB\bin\Debug\Unity.Legacy.NRefactory.dll
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\Automata\AutomataAB\bin\Debug\Unity.UNetWeaver.dll
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\Automata\AutomataAB\bin\Debug\Unity.CecilTools.dll
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\Automata\AutomataAB\bin\Debug\Unity.Cecil.Pdb.dll
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\Automata\AutomataAB\bin\Debug\Unity.Cecil.Mdb.dll
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\Automata\AutomataAB\bin\Debug\UnityEditor.xml
+D:\Escritorio\Escuela\7° Cuatri\Compiladores e interpretes\Auto\Automata\AutomataAB\bin\Debug\UnityEngine.xml
